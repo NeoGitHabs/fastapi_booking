@@ -1,0 +1,9 @@
+SECRET_KEY='ab271a36fa6df1bf7c6e171dee2190b336388bed0fe71537d164f620f921497d'
+
+GITHUB_CLIENT_ID='Ov23liFHavEtGP6n1b4F'
+GITHUB_KEY='43dabe0606e3ba55f1686e69172ce73890883cd5'
+GITHUB_URL='http://127.0.0.1:8000/oauth/github/login'
+
+GOOGLE_CLIENT_ID='1077875227816-mmumaeu34u8j6a57vki3gajhpqj93c19.apps.googleusercontent.com'
+GOOGLE_KEY='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'
+GOOGLE_URL='http://127.0.0.1:8000/oauth/google/callback'
