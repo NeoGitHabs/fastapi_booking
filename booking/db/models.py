@@ -16,7 +16,7 @@ class STATUS_CHOICES(str, PyEnum):
     busy = 'busy'
 
 class TYPE_CHOICE(str, PyEnum):
-    Luh = 'LUH'
+    lux = 'lux'
     single = 'single'
     double = 'double'
     family = 'family'
