@@ -47,6 +47,18 @@ class UserProfile(Base):
     def __repr__(self):
         return f'{self.first_name}, {self.lastname}, {self.username}'
 
+class RefreshToken(Base):
+    __tablename__ = 'refresh_token'
+    id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
+    token: Mapped[str] = mapped_column(String, nullable=False)
+    created_date: Mapped[datetime] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
+
+    user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
+    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_token')
+
+    def __str__(self):
+        return f'{RefreshToken.token}'
+
 class Country(Base):
     __tablename__ = 'country'
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
@@ -122,12 +134,3 @@ class Review(Base):
 
     def __str__(self):
         return f'{self.comment}, {self.rating}'
-
-class RefreshToken(Base):
-    __tablename__ = 'refresh_token'
-    id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True)
-    token: Mapped[str] = mapped_column(String, nullable=False)
-    created_date: Mapped[datetime] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
-
-    user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
-    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_token')
