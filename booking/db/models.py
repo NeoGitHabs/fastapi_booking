@@ -53,7 +53,7 @@ class Country(Base):
     country_name: Mapped[str] = mapped_column(String(64), unique=True)
 
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey('userprofile.id'), nullable=True)
-    user: Mapped[UserProfile] = relationship(UserProfile, back_populates='country_user')
+    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='country_user')
     hotel_country: Mapped[List['Hotel']] = relationship('Hotel', back_populates='country')
 
     def __repr__(self):
@@ -68,9 +68,9 @@ class Hotel(Base):
     hotel_stars: Mapped[int] = mapped_column(Integer)
 
     owner_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
-    owner: Mapped[UserProfile] = relationship(UserProfile, back_populates='owner_hotel')
+    owner: Mapped['UserProfile'] = relationship('UserProfile', back_populates='owner_hotel')
     country_id: Mapped[int] = mapped_column(ForeignKey('country.id'))
-    country: Mapped[Country] = relationship(Country, back_populates='hotel_country')
+    country: Mapped['Country'] = relationship('Country', back_populates='hotel_country')
     room_hotel: Mapped[List['Room']] = relationship('Room', back_populates='hotel', cascade='all, delete-orphan')
     booking_room: Mapped[List['Booking']] = relationship('Booking', back_populates='hotel', cascade='all, delete-orphan')
     review_hotel: Mapped[List['Review']] = relationship('Review', back_populates='hotel', cascade='all, delete-orphan')
@@ -86,7 +86,7 @@ class Room(Base):
     room_type: Mapped[TYPE_CHOICE] = mapped_column(Enum(TYPE_CHOICE), default=TYPE_CHOICE.single)
 
     hotel_id: Mapped[int] = mapped_column(ForeignKey('hotel.id'))
-    hotel: Mapped[Hotel] = relationship(Hotel, back_populates='room_hotel')
+    hotel: Mapped['Hotel'] = relationship('Hotel', back_populates='room_hotel')
     booking_room: Mapped[List['Booking']] = relationship('Booking', back_populates='room', cascade='all, delete-orphan')
 
     def __str__(self):
@@ -98,11 +98,11 @@ class Booking(Base):
     status_book: Mapped[STATUS_BOOK_CHOICES] = mapped_column(Enum(STATUS_BOOK_CHOICES))
 
     user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
-    user: Mapped[UserProfile] = relationship(UserProfile, back_populates='user_booking')
+    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_booking')
     hotel_id: Mapped[int] = mapped_column(ForeignKey('hotel.id'))
-    hotel: Mapped[Hotel] = relationship(Hotel, back_populates='booking_room')
+    hotel: Mapped['Hotel'] = relationship('Hotel', back_populates='booking_room')
     room_id: Mapped[int] = mapped_column(ForeignKey('room.id'))
-    room: Mapped[Room] = relationship(Room, back_populates='booking_room')
+    room: Mapped['Room'] = relationship('Room', back_populates='booking_room')
     created_date: Mapped[datetime] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
 
     def __str__(self):
@@ -116,9 +116,9 @@ class Review(Base):
     created_date: Mapped[datetime] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
 
     author_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
-    author: Mapped[UserProfile] = relationship(UserProfile, back_populates='author_review')
+    author: Mapped['UserProfile'] = relationship('UserProfile', back_populates='author_review')
     hotel_id: Mapped[int] = mapped_column(ForeignKey('hotel.id'))
-    hotel: Mapped[Hotel] = relationship(Hotel, back_populates='review_hotel')
+    hotel: Mapped['Hotel'] = relationship('Hotel', back_populates='review_hotel')
 
     def __str__(self):
         return f'{self.comment}, {self.rating}'
@@ -130,4 +130,4 @@ class RefreshToken(Base):
     created_date: Mapped[datetime] = mapped_column(DateTime, default=lambda : datetime.now(timezone.utc))
 
     user_id: Mapped[int] = mapped_column(ForeignKey('userprofile.id'))
-    user: Mapped[UserProfile] = relationship(UserProfile, back_populates='user_token')
+    user: Mapped['UserProfile'] = relationship('UserProfile', back_populates='user_token')
