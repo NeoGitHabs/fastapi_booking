@@ -11,8 +11,8 @@ class UserProfileLoginSchema(BaseModel):
     class Config:
         from_attributes = True
 
+
 class UserProfileSchema(BaseModel):
-    id: int
     first_name: str
     lastname: str
     username: str
@@ -20,13 +20,19 @@ class UserProfileSchema(BaseModel):
     age: Optional[int] = None
     phone_number: Optional[str] = None
     password: str
-    role: ROLE_CHOICES
+    role: ROLE_CHOICES = ROLE_CHOICES.client
+
+    class Config:
+        from_attributes = True
+
+
+class UserProfileGetSchema(UserProfileSchema):
+    id: int
     created_date: datetime
 
     class Config:
         from_attributes = True
 
-# -------------------------------------------------------------------
 
 class CountrySchema(BaseModel):
     id: int
@@ -35,10 +41,8 @@ class CountrySchema(BaseModel):
     class Config:
         from_attributes = True
 
-# -------------------------------------------------------------------
 
 class HotelCreateSchema(BaseModel):
-    id: int
     hotel_name: str
     hotel_address: str
     hotel_description: str
@@ -46,19 +50,16 @@ class HotelCreateSchema(BaseModel):
     owner_id: Optional[int] = None
     country_id: Optional[int] = None
 
+    class Config:
+        from_attributes = True
+
+
 class HotelSchema(HotelCreateSchema):
     id: int
 
     class Config:
         from_attributes = True
 
-# -------------------------------------------------------------------
-
-class RoomSchema(BaseModel):
-    id: int
-
-    class Config:
-        from_attributes = True
 
 class RoomCreateSchema(BaseModel):
     hotel_id: int
@@ -69,18 +70,13 @@ class RoomCreateSchema(BaseModel):
     class Config:
         from_attributes = True
 
-# -------------------------------------------------------------------
 
-class BookingSchema(BaseModel):
+class RoomSchema(RoomCreateSchema):
     id: int
-    user_id: int
-    hotel_id: int
-    room_id: int
-    created_date: datetime
-    status_book: STATUS_BOOK_CHOICES
 
     class Config:
         from_attributes = True
+
 
 class BookingCreateSchema(BaseModel):
     user_id: int
@@ -91,23 +87,27 @@ class BookingCreateSchema(BaseModel):
     class Config:
         from_attributes = True
 
-# -------------------------------------------------------------------
 
-class ReviewCreateSchema(BaseModel):
-    author_id: int
-    product_id: int
-    comment: str
-    stars: int
+class BookingSchema(BookingCreateSchema):
+    id: int
+    created_date: datetime
 
     class Config:
         from_attributes = True
 
-class ReviewGetSchema(BaseModel):
-    id: int
+
+class ReviewCreateSchema(BaseModel):
     author_id: int
-    product_id: int
+    hotel_id: int
     comment: str
-    stars: int
+    rating: int
+
+    class Config:
+        from_attributes = True
+
+
+class ReviewGetSchema(ReviewCreateSchema):
+    id: int
     created_date: datetime
 
     class Config:
